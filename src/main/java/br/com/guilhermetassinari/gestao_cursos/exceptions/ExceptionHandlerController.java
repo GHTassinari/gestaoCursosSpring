@@ -1,6 +1,7 @@
 package br.com.guilhermetassinari.gestao_cursos.exceptions;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,14 @@ public class ExceptionHandlerController {
         this.messageSource = messageSource;
     }
 
+    // ExceptionHandler to get the ConstraintViolationException from Jakarta
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<List<ErrorMessageDTO>> handleConstraintViolation(ConstraintViolationException e) {
+        List<ErrorMessageDTO> errors = e.getConstraintViolations().stream().map(cv -> new ErrorMessageDTO(cv.getMessage(), cv.getPropertyPath().toString())).toList();
+
+        return ResponseEntity.badRequest().body(errors);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ErrorMessageDTO>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         List<ErrorMessageDTO> dto = new ArrayList<>();
@@ -41,20 +50,10 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorMessageDTO> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        Throwable cause = e.getCause();
-
-        if (cause instanceof JsonMappingException jsonMappingException) {
-            Throwable rootCause = jsonMappingException.getCause();
-
-            if (rootCause instanceof InvalidCourseSatusException) {
-                ErrorMessageDTO error = new ErrorMessageDTO(rootCause.getMessage(), "status");
-                return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-            }
-
-        }
-        ErrorMessageDTO error = new ErrorMessageDTO("Invalid request format", "request");
+    @ExceptionHandler(InvalidCourseSatusException.class)
+    public ResponseEntity<ErrorMessageDTO> handleInvalidCourseStatusException(InvalidCourseSatusException e) {
+        ErrorMessageDTO error = new ErrorMessageDTO(e.getMessage(), "status");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
 }
