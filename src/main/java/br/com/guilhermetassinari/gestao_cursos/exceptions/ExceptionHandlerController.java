@@ -48,7 +48,7 @@ public class ExceptionHandlerController {
         if (cause instanceof JsonMappingException jsonMappingException) {
             Throwable rootCause = jsonMappingException.getCause();
 
-            if (rootCause instanceof StatusRequiredException) {
+            if (rootCause instanceof InvalidCourseSatusException) {
                 ErrorMessageDTO error = new ErrorMessageDTO(rootCause.getMessage(), "status");
                 return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
             }
