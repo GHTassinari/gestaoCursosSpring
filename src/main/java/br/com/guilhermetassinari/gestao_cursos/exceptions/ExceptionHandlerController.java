@@ -1,18 +1,20 @@
 package br.com.guilhermetassinari.gestao_cursos.exceptions;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.enums.CourseStatus;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
@@ -50,10 +52,9 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(InvalidCourseSatusException.class)
-    public ResponseEntity<ErrorMessageDTO> handleInvalidCourseStatusException(InvalidCourseSatusException e) {
+    @ExceptionHandler(InvalidCourseStatusException.class)
+    public ResponseEntity<ErrorMessageDTO> handleInvalidCourseStatusException(InvalidCourseStatusException e) {
         ErrorMessageDTO error = new ErrorMessageDTO(e.getMessage(), "status");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
-
 }

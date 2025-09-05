@@ -1,6 +1,6 @@
-package br.com.guilhermetassinari.gestao_cursos.modules.cursos.enums;
+package br.com.guilhermetassinari.gestao_cursos.modules.courses.enums;
 
-import br.com.guilhermetassinari.gestao_cursos.modules.cursos.deserializers.CourseStatusDeserializer;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.deserializers.CourseStatusDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = CourseStatusDeserializer.class)

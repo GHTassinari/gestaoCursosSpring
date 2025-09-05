@@ -1,8 +1,8 @@
-package br.com.guilhermetassinari.gestao_cursos.modules.cursos.useCases;
+package br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases;
 
 import br.com.guilhermetassinari.gestao_cursos.exceptions.NameFoundException;
-import br.com.guilhermetassinari.gestao_cursos.modules.cursos.entities.CourseEntity;
-import br.com.guilhermetassinari.gestao_cursos.modules.cursos.repositories.CourseRepository;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.entities.CourseEntity;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.repositories.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 public class CreateCourseUseCase {
     private final CourseRepository courseRepository;
 
-    public CourseEntity execute(CourseEntity courseEntity) {
+    public void execute(CourseEntity courseEntity) {
         this.courseRepository.findByName(courseEntity.getName()).ifPresent(course -> {
             throw new NameFoundException();
         });
 
-        return courseRepository.save(courseEntity);
+        courseRepository.save(courseEntity);
     }
 }

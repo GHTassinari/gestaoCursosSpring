@@ -1,6 +1,6 @@
-package br.com.guilhermetassinari.gestao_cursos.modules.cursos.dto;
+package br.com.guilhermetassinari.gestao_cursos.modules.courses.dto;
 
-import br.com.guilhermetassinari.gestao_cursos.modules.cursos.enums.CourseStatus;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.enums.CourseStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 

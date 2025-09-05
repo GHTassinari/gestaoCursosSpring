@@ -1,7 +1,7 @@
-package br.com.guilhermetassinari.gestao_cursos.modules.cursos.entities;
+package br.com.guilhermetassinari.gestao_cursos.modules.courses.entities;
 
-import br.com.guilhermetassinari.gestao_cursos.modules.cursos.deserializers.CourseStatusDeserializer;
-import br.com.guilhermetassinari.gestao_cursos.modules.cursos.enums.CourseStatus;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.deserializers.CourseStatusDeserializer;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.enums.CourseStatus;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
