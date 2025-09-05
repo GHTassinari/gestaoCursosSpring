@@ -2,6 +2,9 @@ package br.com.guilhermetassinari.gestao_cursos.modules.cursos.entities;
 
 import br.com.guilhermetassinari.gestao_cursos.modules.cursos.enums.CourseStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,10 +19,15 @@ public class CourseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @NotBlank(message = "Course name is obligatory")
+    @Size(min = 1, max = 60, message = "Course name must have between 1 and 60 characters")
     private String name;
 
+    @NotBlank(message = "Category is obligatory")
+    @Size(min = 1, max = 30, message = "Category name must have between 1 and 30 characters")
     private String category;
 
+    @NotNull(message = "Status is obligatory")
     @Enumerated(EnumType.STRING)
     private CourseStatus status;
 
