@@ -1,6 +1,8 @@
 package br.com.guilhermetassinari.gestao_cursos.modules.cursos.entities;
 
+import br.com.guilhermetassinari.gestao_cursos.modules.cursos.deserializers.CourseStatusDeserializer;
 import br.com.guilhermetassinari.gestao_cursos.modules.cursos.enums.CourseStatus;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +31,7 @@ public class CourseEntity {
 
     @NotNull(message = "Status is obligatory")
     @Enumerated(EnumType.STRING)
+    @JsonDeserialize(using = CourseStatusDeserializer.class)
     private CourseStatus status;
 
     @CreationTimestamp
