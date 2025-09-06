@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class FullUpdateCourseUseCase {
+public class UpdateCourseUseCase {
     private final CourseRepository courseRepository;
 
     public void execute(UUID id, CourseEntity courseEntity){
@@ -30,7 +30,6 @@ public class FullUpdateCourseUseCase {
 
         existingCourse.setName(courseEntity.getName());
         existingCourse.setCategory(courseEntity.getCategory());
-        existingCourse.setStatus(courseEntity.getStatus());
 
         courseRepository.save(existingCourse);
     }

@@ -5,8 +5,9 @@ import br.com.guilhermetassinari.gestao_cursos.modules.courses.dto.*;
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.entities.CourseEntity;
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.enums.CourseStatus;
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.CreateCourseUseCase;
-import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.FullUpdateCourseUseCase;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.UpdateCourseUseCase;
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.GetCourseUseCase;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.UpdateStatusUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,9 @@ public class CourseController {
 
     private final GetCourseUseCase getCourseUseCase;
 
-    private final FullUpdateCourseUseCase fullUpdateCourseUseCase;
+    private final UpdateCourseUseCase updateCourseUseCase;
+
+    private final UpdateStatusUseCase updateStatusUseCase;
 
     @PostMapping("")
     public ResponseEntity<Void> create(@Valid @RequestBody CreateCourseDTO createCourseDTO) {
@@ -101,19 +104,32 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> fullUpdate(@PathVariable String id,
-                                           @Valid @RequestBody FullUpdateCourseDTO fullUpdateCourseDTO){
+    public ResponseEntity<Void> updateCourse(@PathVariable String id,
+                                           @Valid @RequestBody UpdateCourseDTO updateCourseDTO){
         UUID courseId = UUID.fromString(id);
 
         var courseEntity = CourseEntity.builder()
-                .name(fullUpdateCourseDTO.getName())
-                .category(fullUpdateCourseDTO.getCategory())
-                .status(fullUpdateCourseDTO.getStatus())
+                .name(updateCourseDTO.getName())
+                .category(updateCourseDTO.getCategory())
                 .build();
 
-        this.fullUpdateCourseUseCase.execute(courseId, courseEntity);
+        this.updateCourseUseCase.execute(courseId, courseEntity);
 
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Void> updateStatus(@PathVariable String id,
+                                             @Valid @RequestBody UpdateStatusDTO updateStatusDTO){
+
+        UUID courseId = UUID.fromString(id);
+
+        var courseEntity = CourseEntity.builder()
+                .status(updateStatusDTO.getStatus())
+                .build();
+
+        this.updateStatusUseCase.execute(courseId, courseEntity);
+
+        return ResponseEntity.ok().build();
+    }
 }

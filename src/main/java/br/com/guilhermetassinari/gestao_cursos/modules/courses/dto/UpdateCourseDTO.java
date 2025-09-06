@@ -6,8 +6,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = false)
-public class FullUpdateCourseDTO {
+public class UpdateCourseDTO {
     private String name;
     private String category;
-    private CourseStatus status;
 }
