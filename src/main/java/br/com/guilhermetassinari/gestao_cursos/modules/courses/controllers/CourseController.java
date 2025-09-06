@@ -1,13 +1,11 @@
 package br.com.guilhermetassinari.gestao_cursos.modules.courses.controllers;
 
 import br.com.guilhermetassinari.gestao_cursos.exceptions.InvalidCourseStatusException;
-import br.com.guilhermetassinari.gestao_cursos.modules.courses.dto.CreateCourseDTO;
-import br.com.guilhermetassinari.gestao_cursos.modules.courses.dto.GetCoursePageDTO;
-import br.com.guilhermetassinari.gestao_cursos.modules.courses.dto.GetCourseRequestDTO;
-import br.com.guilhermetassinari.gestao_cursos.modules.courses.dto.GetCourseResponseDTO;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.dto.*;
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.entities.CourseEntity;
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.enums.CourseStatus;
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.CreateCourseUseCase;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.FullUpdateCourseUseCase;
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.GetCourseUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +24,8 @@ public class CourseController {
     private final CreateCourseUseCase createCourseUseCase;
 
     private final GetCourseUseCase getCourseUseCase;
+
+    private final FullUpdateCourseUseCase fullUpdateCourseUseCase;
 
     @PostMapping("")
     public ResponseEntity<Void> create(@Valid @RequestBody CreateCourseDTO createCourseDTO) {
@@ -98,6 +98,22 @@ public class CourseController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> fullUpdate(@PathVariable String id,
+                                           @Valid @RequestBody FullUpdateCourseDTO fullUpdateCourseDTO){
+        UUID courseId = UUID.fromString(id);
+
+        var courseEntity = CourseEntity.builder()
+                .name(fullUpdateCourseDTO.getName())
+                .category(fullUpdateCourseDTO.getCategory())
+                .status(fullUpdateCourseDTO.getStatus())
+                .build();
+
+        this.fullUpdateCourseUseCase.execute(courseId, courseEntity);
+
+        return ResponseEntity.ok().build();
     }
 
 }

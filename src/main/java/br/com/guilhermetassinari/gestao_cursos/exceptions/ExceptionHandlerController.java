@@ -1,6 +1,7 @@
 package br.com.guilhermetassinari.gestao_cursos.exceptions;
 
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.enums.CourseStatus;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -56,5 +57,11 @@ public class ExceptionHandlerController {
     public ResponseEntity<ErrorMessageDTO> handleInvalidCourseStatusException(InvalidCourseStatusException e) {
         ErrorMessageDTO error = new ErrorMessageDTO(e.getMessage(), "status");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorMessageDTO> handleEntityNotFoundException(EntityNotFoundException e) {
+        ErrorMessageDTO error = new ErrorMessageDTO(e.getMessage(), "resource");
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }
