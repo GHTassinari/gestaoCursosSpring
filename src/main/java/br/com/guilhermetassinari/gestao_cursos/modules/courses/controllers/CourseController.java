@@ -4,10 +4,7 @@ import br.com.guilhermetassinari.gestao_cursos.exceptions.InvalidCourseStatusExc
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.dto.*;
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.entities.CourseEntity;
 import br.com.guilhermetassinari.gestao_cursos.modules.courses.enums.CourseStatus;
-import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.CreateCourseUseCase;
-import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.UpdateCourseUseCase;
-import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.GetCourseUseCase;
-import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.UpdateStatusUseCase;
+import br.com.guilhermetassinari.gestao_cursos.modules.courses.useCases.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,6 +26,8 @@ public class CourseController {
     private final UpdateCourseUseCase updateCourseUseCase;
 
     private final UpdateStatusUseCase updateStatusUseCase;
+
+    private final DeleteCourseUseCase deleteCourseUseCase;
 
     @PostMapping("")
     public ResponseEntity<Void> create(@Valid @RequestBody CreateCourseDTO createCourseDTO) {
@@ -129,6 +128,15 @@ public class CourseController {
                 .build();
 
         this.updateStatusUseCase.execute(courseId, courseEntity);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable String id){
+        UUID courseId = UUID.fromString(id);
+
+        this.deleteCourseUseCase.execute(courseId);
 
         return ResponseEntity.ok().build();
     }

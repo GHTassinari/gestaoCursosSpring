@@ -16,10 +16,7 @@ public class UpdateCourseUseCase {
 
     public void execute(UUID id, CourseEntity courseEntity){
         CourseEntity existingCourse = this.courseRepository.findById(id)
-                .orElseThrow(() -> {
-                    System.out.println("Throwing EntityNotFoundException for id: " + id);
-                    return new EntityNotFoundException("Course not found with id: " + id);
-                });
+                .orElseThrow(() -> new EntityNotFoundException("Course not found with id: " + id));
 
         // Verifies if the name already exists, and it isn't the name of the course currently being used
         this.courseRepository.findByName(courseEntity.getName()).ifPresent(course -> {

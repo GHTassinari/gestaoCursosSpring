@@ -10,15 +10,13 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UpdateStatusUseCase {
+public class DeleteCourseUseCase {
     private final CourseRepository courseRepository;
 
-    public void execute(UUID id, CourseEntity courseEntity) {
+    public void execute(UUID id){
         CourseEntity existingCourse = this.courseRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Course not found with id: " + id));
 
-        existingCourse.setStatus(courseEntity.getStatus());
-
-        this.courseRepository.save(existingCourse);
+        courseRepository.delete(existingCourse);
     }
 }
